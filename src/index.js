@@ -7,6 +7,7 @@
 
 //Node.js imports
 import express from 'express';
+import { createServer } from 'node:http';
 import cors from 'cors';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
@@ -14,6 +15,7 @@ import swaggerUI from 'swagger-ui-express';
 //config imports
 import { dbConnect } from './config/db.js';
 import swaggerOptions from './config/swagger.js';
+import { initSocket } from './config/socket.js';
 
 //Middleware imports
 import errorHandler from './middlewares/errorHandler.js';
@@ -24,6 +26,7 @@ import { userRouter, eventRouter, notificationRouter, authRouter } from './route
 
 //creating an instance of the Express server
 const app = express();
+const server = createServer(app);
 
 //setting up middleware
 app.use(express.urlencoded({ extended: true }));
@@ -56,10 +59,12 @@ app.use((req, res, next) => {
 //error handling middleware
 app.use(errorHandler);
 
+//Socket.io initialization
+initSocket(server);
+
 //starting the server
 const port = process.env.PORT || 4000;
-app.listen(port, () => {
+server.listen(port, () => {
 	console.log('\x1b[32m%s\x1b[0m', `Server started. The server is listen on http://localhost:${port}`);
-
 	console.log('\x1b[32m%s\x1b[0m', `Documentation Swagger in http://localhost:${port}/api-docs`);
 });

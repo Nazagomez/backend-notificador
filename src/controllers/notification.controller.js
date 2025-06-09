@@ -1,10 +1,11 @@
 import notificationService from '../services/notification.service.js';
 
 const notificationController = {
-	create: async (req, res, next) => {
+	sendNotification: async (req, res, next) => {
 		try {
 			const notification = await notificationService.create(req.body);
-			res.status(201).json(notification);
+			notificationService.emitNotification(notification);
+			res.status(200).json({ message: 'Notification sent successfully', notification });
 		} catch (error) {
 			next(error);
 		}

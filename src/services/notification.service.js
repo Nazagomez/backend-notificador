@@ -1,5 +1,6 @@
 import NotFoundError from '../errors/notFoundError.js';
 import { Notification } from '../models/index.js';
+import { getIO } from '../config/socket.js';
 
 const notificationService = {
 	create: async (notificationData) => {
@@ -56,6 +57,14 @@ const notificationService = {
 		} catch (error) {
 			throw error;
 		}
+	},
+
+	emitNotification: (notification) => {
+		const io = getIO();
+		if (!io) {
+			throw new Error('Socket.io not initialized. Please call initSocket first.');
+		}
+		io.emit('notification', notification);
 	},
 };
 

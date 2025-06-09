@@ -3,7 +3,7 @@ import notificationController from '../controllers/notification.controller.js';
 
 const notificationRouter = Router();
 
-notificationRouter.post('/', notificationController.create);
+notificationRouter.post('/', notificationController.sendNotification);
 notificationRouter.get('/', notificationController.getAll);
 notificationRouter.get('/:id', notificationController.getById);
 notificationRouter.put('/:id', notificationController.update);
