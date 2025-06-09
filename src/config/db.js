@@ -34,7 +34,7 @@ export const dbConnect = async () => {
 
 		//synchronizing the models with the database
 		try {
-			await db.sync({ force: true });
+			await db.sync({ alter: true });
 			console.log('\x1b[36m%s\x1b[0m', 'All models were synchronized successfully.');
 		} catch (error) {
 			console.error('\x1b[31m%s\x1b[0m', 'Unable to synchronize the models with the database:', error);
