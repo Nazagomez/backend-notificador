@@ -6,37 +6,53 @@ const Event = db.define('Event', {
 		type: DataTypes.UUID,
 		primaryKey: true,
 		defaultValue: DataTypes.UUIDV4,
-		allowNull: false
+		allowNull: false,
 	},
 	title: {
 		type: DataTypes.STRING,
-		allowNull: false
+		allowNull: false,
 	},
 	description: {
 		type: DataTypes.TEXT,
-		allowNull: false
+		allowNull: false,
 	},
 	date: {
 		type: DataTypes.DATE,
-		allowNull: false
+		allowNull: false,
 	},
 	location: {
 		type: DataTypes.STRING,
-		allowNull: false
+		allowNull: false,
 	},
 	organizer: {
 		type: DataTypes.STRING,
-		allowNull: false
+		allowNull: false,
 	},
 	category: {
-		type: DataTypes.ENUM('sport', 'music', 'art', 'technology', 'education', 'politics', 'health', 'games', 'culture', 'other'),
-		allowNull: false
+		type: DataTypes.ENUM(
+			'sport',
+			'music',
+			'art',
+			'technology',
+			'education',
+			'politics',
+			'health',
+			'games',
+			'culture',
+			'other',
+		),
+		allowNull: false,
 	},
 	state: {
 		type: DataTypes.ENUM('upcoming', 'ongoing', 'completed', 'cancelled', 'postponed'),
 		allowNull: false,
-		defaultValue: 'upcoming'
-	}
+		defaultValue: 'upcoming',
+	},
+	featured: {
+		type: DataTypes.BOOLEAN,
+		allowNull: false,
+		defaultValue: false,
+	},
 });
 
 export default Event;
