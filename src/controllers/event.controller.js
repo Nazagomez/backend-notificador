@@ -12,7 +12,10 @@ const eventController = {
 
 	getAll: async (req, res, next) => {
 		try {
-			const events = await eventService.getAll();
+			const page = parseInt(req.query.page, 10) || 0;
+			const size = parseInt(req.query.size, 10) || 20;
+
+			const events = await eventService.getAll({ page, size });
 			res.status(200).json(events);
 		} catch (error) {
 			next(error);

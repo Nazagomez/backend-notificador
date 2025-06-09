@@ -11,9 +11,16 @@ const eventService = {
 		}
 	},
 
-	getAll: async () => {
+	getAll: async ({ page = 0, size = 20 }) => {
 		try {
-			const events = await Event.findAll();
+			const offset = page * size;
+			const limit = size;
+
+			const events = await Event.findAll({
+				offset,
+				limit,
+				order: [['date', 'ASC']],
+			});
 			return events;
 		} catch (error) {
 			throw error;
