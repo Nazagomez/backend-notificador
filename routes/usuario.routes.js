@@ -1,3 +1,7 @@
+const express = require('express');
+const router = express.Router();
+const db = require('../db');
+
 /**
  * @swagger
  * tags:
@@ -5,16 +9,14 @@
  *   description: Operaciones relacionadas con los usuarios
  */
 
-const express = require('express');
-const router = express.Router();
-const db = require('../db');
-
 /**
  * @swagger
  * /usuarios:
  *   get:
  *     summary: Obtener todos los usuarios
  *     tags: [Usuarios]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de usuarios
@@ -55,10 +57,10 @@ router.get('/', async (req, res) => {
  *                   example: 1
  */
 router.post('/', async (req, res) => {
-  const { Nombre, Correo, Tipo } = req.body;
+  const { Nombre, Correo } = req.body;
   const [result] = await db.query(
     'INSERT INTO Usuario (Nombre, Correo) VALUES (?, ?)',
-    [Nombre, Correo, Tipo]
+    [Nombre, Correo]
   );
   res.status(201).json({ id: result.insertId });
 });
@@ -113,10 +115,10 @@ router.get('/:id', async (req, res) => {
  *         description: Usuario actualizado correctamente
  */
 router.put('/:id', async (req, res) => {
-  const { Nombre, Correo, Tipo } = req.body;
+  const { Nombre, Correo } = req.body;
   await db.query(
-    'UPDATE Usuario SET Nombre = ?, Correo = ?, Tipo = ? WHERE ID_Usuario = ?',
-    [Nombre, Correo, Tipo, req.params.id]
+    'UPDATE Usuario SET Nombre = ?, Correo = ? WHERE ID_Usuario = ?',
+    [Nombre, Correo, req.params.id]
   );
   res.json({ message: 'Usuario actualizado' });
 });
@@ -142,5 +144,35 @@ router.delete('/:id', async (req, res) => {
   await db.query('DELETE FROM Usuario WHERE ID_Usuario = ?', [req.params.id]);
   res.json({ message: 'Usuario eliminado' });
 });
+
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: Autenticación de usuarios
+ */
+
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Iniciar sesión y obtener token JWT
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/InicioSesionInput'
+ *     responses:
+ *       200:
+ *         description: Login exitoso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenResponse'
+ *       401:
+ *         description: Credenciales incorrectas
+ */
 
 module.exports = router;
