@@ -5,7 +5,7 @@ const notificationController = {
 		try {
 			const notification = await notificationService.create(req.body);
 			notificationService.emitNotification(notification);
-			res.status(200).json({ message: 'Notification sent successfully', notification });
+			res.status(200).json(notification);
 		} catch (error) {
 			next(error);
 		}
