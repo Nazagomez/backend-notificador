@@ -1,11 +1,15 @@
 import NotFoundError from '../errors/notFoundError.js';
-import { Notification } from '../models/index.js';
+import { Event, Notification } from '../models/index.js';
 import { getIO } from '../config/socket.js';
 
 const notificationService = {
 	create: async (notificationData) => {
 		try {
 			const notification = await Notification.create(notificationData);
+
+			const event = await notification.getEvent();
+			notification.setDataValue('eventTitle', event.title);
+
 			return notification;
 		} catch (error) {
 			throw error;
@@ -14,7 +18,17 @@ const notificationService = {
 
 	getAll: async () => {
 		try {
-			const notifications = await Notification.findAll();
+			const notifications = await Notification.findAll({
+				include: {
+					model: Event,
+					attributes: ['title'],
+				},
+				order: [['createdAt', 'DESC']],
+			});
+
+			notifications.forEach((notification) => {
+				notification.setDataValue('eventTitle', notification.Event.title);
+			});
 			return notifications;
 		} catch (error) {
 			throw error;
