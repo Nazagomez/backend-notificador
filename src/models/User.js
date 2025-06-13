@@ -2,26 +2,34 @@ import db from '../config/db.js';
 import { DataTypes } from 'sequelize';
 
 const User = db.define('User', {
-	id:{
+	id: {
 		type: DataTypes.UUID,
 		primaryKey: true,
 		defaultValue: DataTypes.UUIDV4,
-		allowNull: false
+		allowNull: false,
 	},
-	email:{
+	name: {
 		type: DataTypes.STRING,
-		allowNull: true,
+		allowNull: false,
+	},
+	lastName: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+	email: {
+		type: DataTypes.STRING,
+		allowNull: false,
 		unique: true,
 	},
-	password:{
+	password: {
 		type: DataTypes.STRING,
-		allowNull: true,
-	},
-	role:{
-		type: DataTypes.ENUM('admin', 'anonymous'),
 		allowNull: false,
-		defaultValue: 'anonymous'
-	}
+	},
+	role: {
+		type: DataTypes.ENUM('admin', 'user'),
+		allowNull: false,
+		defaultValue: 'user',
+	},
 });
 
 export default User;
