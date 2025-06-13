@@ -33,6 +33,14 @@
  *           type: string
  *           enum: [upcoming, ongoing, completed, cancelled, postponed]
  *           description: The current state of the event
+ *         featured:
+ *           type: boolean
+ *           description: Indicates if the event is featured
+ *           default: false
+ *         UserId:
+ *           type: string
+ *           format: uuid
+ *           description: The ID of the user who created the event
  *       required:
  *         - title
  *         - description
@@ -41,6 +49,7 @@
  *         - organizer
  *         - category
  *         - state
+ *         - UserId
  *       example:
  *         id: "f1e3a8f4-3497-42f9-9c70-123456789abc"
  *         title: "Tech Conference 2025"
@@ -50,4 +59,6 @@
  *         organizer: "OpenTech"
  *         category: "technology"
  *         state: "upcoming"
+ *         featured: false
+ *         UserId: "123e4567-e89b-12d3-a456-426614174000"
  */
