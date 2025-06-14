@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import NotFoundError from '../errors/notFoundError.js';
 import { Event } from '../models/index.js';
 
@@ -17,10 +18,16 @@ const eventService = {
 			const limit = size;
 
 			const events = await Event.findAll({
+				where: {
+					state: {
+						[Op.ne]: 'completed',
+					},
+				},
 				offset,
 				limit,
 				order: [['date', 'ASC']],
 			});
+
 			return events;
 		} catch (error) {
 			throw error;

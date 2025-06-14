@@ -1,6 +1,7 @@
 import NotFoundError from '../errors/notFoundError.js';
 import { Event, Notification } from '../models/index.js';
 import { getIO } from '../config/socket.js';
+import { Op } from 'sequelize';
 
 const notificationService = {
 	create: async (notificationData) => {
@@ -22,10 +23,14 @@ const notificationService = {
 				include: {
 					model: Event,
 					attributes: ['title'],
+					where: {
+						state: {
+							[Op.ne]: 'completed',
+						},
+					},
 				},
 				order: [['createdAt', 'DESC']],
 			});
-
 			notifications.forEach((notification) => {
 				notification.setDataValue('eventTitle', notification.Event.title);
 			});
