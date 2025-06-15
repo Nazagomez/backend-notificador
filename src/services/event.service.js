@@ -1,6 +1,6 @@
 import { Op } from 'sequelize';
 import NotFoundError from '../errors/notFoundError.js';
-import { Event } from '../models/index.js';
+import { Event, User } from '../models/index.js';
 
 const eventService = {
 	create: async (eventData) => {
@@ -67,6 +67,46 @@ const eventService = {
 			}
 			await event.destroy();
 			return { message: 'Event deleted successfully' };
+		} catch (error) {
+			throw error;
+		}
+	},
+
+	registerAttendance: async (id, userId) => {
+		try {
+			const event = await Event.findByPk(id);
+			if (!event) {
+				throw new NotFoundError('Event', id);
+			}
+
+			const user = await User.findByPk(userId);
+			if (!user) {
+				throw new NotFoundError('User', userId);
+			}
+
+			await event.addFollower(user);
+
+			return { message: 'Attendance registered successfully' };
+		} catch (error) {
+			throw error;
+		}
+	},
+
+	cancelAttendance: async (id, userId) => {
+		try {
+			const event = await Event.findByPk(id);
+			if (!event) {
+				throw new NotFoundError('Event', id);
+			}
+
+			const user = await User.findByPk(userId);
+			if (!user) {
+				throw new NotFoundError('User', userId);
+			}
+
+			await event.removeFollower(user);
+
+			return { message: 'Attendance canceled successfully' };
 		} catch (error) {
 			throw error;
 		}

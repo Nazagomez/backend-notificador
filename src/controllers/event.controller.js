@@ -48,6 +48,30 @@ const eventController = {
 			next(error);
 		}
 	},
+
+	registerAttendance: async (req, res, next) => {
+		try {
+			const eventId = req.params.id;
+			const userId = req.params.userId;
+
+			await eventService.registerAttendance(eventId, userId);
+			res.status(200).json({ message: 'Attendance registered successfully' });
+		} catch (error) {
+			next(error);
+		}
+	},
+
+	cancelAttendance: async (req, res, next) => {
+		try {
+			const eventId = req.params.id;
+			const userId = req.params.userId;
+
+			await eventService.cancelAttendance(eventId, userId);
+			res.status(200).json({ message: 'Attendance canceled successfully' });
+		} catch (error) {
+			next(error);
+		}
+	},
 };
 
 export default eventController;

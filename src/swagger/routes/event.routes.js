@@ -126,3 +126,89 @@
  *       500:
  *         description: Internal server error
  */
+
+/**
+ * @swagger
+ * /events/{id}/{userId}:
+ *   post:
+ *     summary: Register attendance to an event
+ *     tags: [Events]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the event
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: The ID of the user registering attendance
+ *         schema:
+ *           type: string
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Attendance registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Attendance registered successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Event or User not found
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /events/{id}/{userId}:
+ *   delete:
+ *     summary: Cancel attendance to an event
+ *     tags: [Events]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the event
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: The ID of the user cancelling attendance
+ *         schema:
+ *           type: string
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Attendance cancelled successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Attendance cancelled successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Event or User not found
+ *       500:
+ *         description: Internal server error
+ */
