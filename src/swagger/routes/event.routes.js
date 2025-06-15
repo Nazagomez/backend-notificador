@@ -194,6 +194,12 @@
  *           type: string
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
  *     responses:
  *       200:
  *         description: Attendance cancelled successfully
@@ -205,6 +211,43 @@
  *                 message:
  *                   type: string
  *                   example: Attendance cancelled successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Event or User not found
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /events/{id}/attendance/{userId}:
+ *   get:
+ *     summary: Verify if a user has marked attendance to an event
+ *     tags: [Events]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the event
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: The ID of the user
+ *         schema:
+ *           type: string
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Whether the user has registered attendance
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: boolean
+ *               example: true
  *       401:
  *         description: Unauthorized
  *       404:

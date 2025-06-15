@@ -111,6 +111,24 @@ const eventService = {
 			throw error;
 		}
 	},
+
+	hasUserRegisteredAttendance: async (id, userId) => {
+		try {
+			const event = await Event.findByPk(id);
+			if (!event) {
+				throw new NotFoundError('Event', id);
+			}
+
+			const user = await User.findByPk(userId);
+			if (!user) {
+				throw new NotFoundError('User', userId);
+			}
+
+			return await event.hasFollower(user);
+		} catch (error) {
+			throw error;
+		}
+	},
 };
 
 export default eventService;

@@ -72,6 +72,18 @@ const eventController = {
 			next(error);
 		}
 	},
+
+	hasUserRegisteredAttendance: async (req, res, next) => {
+		try {
+			const eventId = req.params.id;
+			const userId = req.params.userId;
+
+			const hasFollower = await eventService.hasUserRegisteredAttendance(eventId, userId);
+			res.status(200).json(hasFollower);
+		} catch (error) {
+			next(error);
+		}
+	},
 };
 
 export default eventController;
