@@ -28,6 +28,11 @@ const eventService = {
 				order: [['date', 'ASC']],
 			});
 
+			for (const event of events) {
+				const count = await event.countFollowers();
+				event.setDataValue('attendeesCount', count);
+			}
+
 			return events;
 		} catch (error) {
 			throw error;
@@ -40,6 +45,10 @@ const eventService = {
 			if (!event) {
 				throw new NotFoundError('Event', id);
 			}
+
+			const count = await event.countFollowers();
+			event.setDataValue('attendeesCount', count);
+
 			return event;
 		} catch (error) {
 			throw error;
@@ -124,7 +133,9 @@ const eventService = {
 				throw new NotFoundError('User', userId);
 			}
 
-			return await event.hasFollower(user);
+			const attending = await event.hasFollower(user);
+
+			return { attending };
 		} catch (error) {
 			throw error;
 		}
