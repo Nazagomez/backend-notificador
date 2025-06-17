@@ -1,6 +1,8 @@
 import { Op } from 'sequelize';
 import NotFoundError from '../errors/notFoundError.js';
 import { Event, User } from '../models/index.js';
+import ForbiddenError from '../errors/forbiddenError.js';
+import notificationService from './notification.service.js';
 
 const eventService = {
 	create: async (eventData) => {
@@ -61,7 +63,29 @@ const eventService = {
 			if (!event) {
 				throw new NotFoundError('Event', id);
 			}
+
+			const originalValues = { ...event.dataValues };
+
 			await event.update(eventData);
+			const changedFields = [];
+
+			for (const key of Object.keys(eventData)) {
+				if (originalValues[key] !== event[key]) {
+					changedFields.push(key);
+				}
+			}
+
+			if (changedFields.length > 0) {
+				const notificationData = {
+					title: `${originalValues.title} | Event Updated`,
+					message: `Updated fields: ${changedFields.join(', ')}`,
+					EventId: event.id,
+					UserId: eventData.UserId,
+				};
+
+				const notification = await notificationService.create(notificationData);
+				notificationService.emitNotification(notification);
+			}
 			return event;
 		} catch (error) {
 			throw error;
@@ -86,6 +110,15 @@ const eventService = {
 			const event = await Event.findByPk(id);
 			if (!event) {
 				throw new NotFoundError('Event', id);
+			}
+
+			const count = await event.countFollowers();
+
+			if (count === event.capacity) {
+				throw new ForbiddenError(
+					'attend event',
+					'This event has reached its maximum capacity. You cannot register as an attendee.',
+				);
 			}
 
 			const user = await User.findByPk(userId);
