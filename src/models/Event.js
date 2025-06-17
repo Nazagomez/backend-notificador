@@ -53,6 +53,13 @@ const Event = db.define('Event', {
 		allowNull: false,
 		defaultValue: false,
 	},
+	capacity: {
+		type: DataTypes.INTEGER,
+		allowNull: false,
+		validate: {
+			min: 1,
+		},
+	},
 });
 
 export default Event;
