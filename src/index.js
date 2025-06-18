@@ -24,6 +24,9 @@ import requireJson from './middlewares/contentType.js';
 //Route imports
 import { userRouter, eventRouter, notificationRouter, authRouter } from './routes/index.js';
 
+//Jobs
+import './jobs/eventStatusUpdater.js';
+
 //creating an instance of the Express server
 const app = express();
 const server = createServer(app);
