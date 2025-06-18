@@ -14,6 +14,20 @@ const authController = {
 			next(error);
 		}
 	},
+
+	resetPassword: async (req, res, next) => {
+		try {
+			const { email, password, newPassword } = req.body;
+
+			if (!email || !password || !newPassword) {
+				return res.status(400).json({ message: 'Email, password and new password are required.' });
+			}
+			await authService.resetPassword(email, password, newPassword);
+			res.status(200).json({ message: 'ok' });
+		} catch (error) {
+			next(error);
+		}
+	},
 };
 
 export default authController;
